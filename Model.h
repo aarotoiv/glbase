@@ -1,7 +1,6 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include <iostream>
 #include <vector>
 #include <string>
 
@@ -12,26 +11,27 @@
 #include "Mesh.h"
 #include "Texture.h"
 
-class Model {
-    public:
-        Model();
+class Model
+{
+public:
+	Model();
 
-        void loadModel(const std::string &fileName);
-        void renderModel();
-        void clearModel();
+	void loadModel(const std::string& fileName);
+	void renderModel();
+	void clearModel();
 
-        ~Model();
-    private:
+	~Model();
 
-        void loadNode(aiNode *node, const aiScene *scene);
-        void loadMesh(aiMesh *mesh, const aiScene *scene);
-        void loadMaterials(const aiScene *scene);
+private:
 
-        std::vector<Mesh*> meshList;
-        std::vector<Texture*> textureList;
-        std::vector<unsigned int> meshToTex;
+	void loadNode(aiNode *node, const aiScene *scene);
+	void loadMesh(aiMesh *mesh, const aiScene *scene);
+	void loadMaterials(const aiScene *scene);
 
+	std::vector<Mesh*> meshList;
+	std::vector<Texture*> textureList;
+	std::vector<unsigned int> meshToTex;
 };
 
-
 #endif
+

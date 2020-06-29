@@ -7,23 +7,27 @@
 
 #include "ShadowMap.h"
 
-class Light {
-    public:
-        Light();
-        Light(GLuint shadowWidth, GLuint shadowHeight, GLfloat red, GLfloat green, GLfloat blue, GLfloat aIntensity, GLfloat dIntensity);
+class Light
+{
+public:
+	Light();
+	Light(GLuint shadowWidth, GLuint shadowHeight, 
+			GLfloat red, GLfloat green, GLfloat blue,
+			GLfloat aIntensity, GLfloat dIntensity);
 
-        ShadowMap* getShadowMap() { return shadowMap; }
+	ShadowMap* getShadowMap() { return shadowMap; }
 
-        ~Light();
+	~Light();
 
-    protected:
-        glm::vec3 color;
-        GLfloat ambientIntensity;
-        GLfloat diffuseIntensity;
+protected:
+	glm::vec3 colour;
+	GLfloat ambientIntensity;
+	GLfloat diffuseIntensity;
 
-        glm::mat4 lightProj;
+	glm::mat4 lightProj;
 
-        ShadowMap* shadowMap;
+	ShadowMap* shadowMap;
 };
 
 #endif
+

@@ -2,26 +2,27 @@
 #define SHADOW_MAP_H
 
 #include <stdio.h>
+
 #include <GL/glew.h>
 
-class ShadowMap {
-    public:
-        ShadowMap();
-        virtual bool init(GLuint width, GLuint height);
-        virtual void write();
-        virtual void read(GLenum textureUnit);
+class ShadowMap
+{
+public:
+	ShadowMap();
 
-        GLuint getShadowWidth() { return shadowWidth; }
-        GLuint getShadowHeight() { return shadowHeight; }
+	virtual bool init(unsigned int width, unsigned int height);
 
-        ~ShadowMap();
+	virtual void write();
 
-    protected:
-        GLuint FBO, shadowMap;
-        GLuint shadowWidth, shadowHeight;
+	virtual void read(GLenum TextureUnit);
 
+	GLuint getShadowWidth() { return shadowWidth; }
+	GLuint getShadowHeight() { return shadowHeight; }
+
+	~ShadowMap();
+protected:
+	GLuint FBO, shadowMap;
+	GLuint shadowWidth, shadowHeight;
 };
-
-
 
 #endif
