@@ -1,0 +1,2 @@
+Compilation
+g++ -std=c++0x *.cpp -w -lSDL2 -lGLEW -lGL -lassimp -o meme
