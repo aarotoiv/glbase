@@ -26,6 +26,8 @@
 
 #include "Model.h"
 
+#include "Cube.h"
+
 const float toRadians = 3.14159265f / 180.0f;
 
 GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
@@ -38,6 +40,7 @@ std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
 Shader directionalShadowShader;
 Shader omniShadowShader;
+Shader noTexShader;
 
 Camera camera;
 
@@ -62,6 +65,8 @@ GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
 
 GLfloat blackhawkAngle = 0.0f;
+
+Cube *cube;
 
 // Vertex Shader
 static const char* vShader = "Shaders/shader.vert";
@@ -139,6 +144,8 @@ void createObjects()
 	Mesh *obj3 = new Mesh();
 	obj3->createMesh(floorVertices, floorIndices, 32, 6);
 	meshList.push_back(obj3);
+
+	cube = new Cube(1.0f, 0.0f, 0.0f);
 }
 
 void createShaders()
@@ -146,6 +153,9 @@ void createShaders()
 	Shader *shader1 = new Shader();
 	shader1->createFromFiles(vShader, fShader);
 	shaderList.push_back(*shader1);
+
+	noTexShader.createFromFiles("Shaders/shader_notex.vert", "Shaders/shader_notex.frag");
+
 
 	directionalShadowShader.createFromFiles("Shaders/directional_shadow_map.vert", "Shaders/directional_shadow_map.frag");
 	omniShadowShader.createFromFiles("Shaders/omni_shadow_map.vert", "Shaders/omni_shadow_map.geom", "Shaders/omni_shadow_map.frag");
@@ -199,6 +209,14 @@ void renderScene()
 	blackhawk.renderModel();
 }
 
+void renderCube() {
+	glm::mat4 model(1.0f);
+	model = glm::scale(model, glm::vec3(0.5f, 0.5, 0.5f));
+	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+	shinyMaterial.useMaterial(uniformSpecularIntensity, uniformShininess);
+	cube->render();
+}
+
 void directionalShadowMapPass(DirectionalLight* light)
 {
 	directionalShadowShader.useShader();
@@ -215,6 +233,7 @@ void directionalShadowMapPass(DirectionalLight* light)
 	directionalShadowShader.validate();
 
 	renderScene();
+	renderCube();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -237,6 +256,8 @@ void omniShadowMapPass(PointLight* light) {
 	omniShadowShader.validate();
 
 	renderScene();
+	renderCube();
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -278,17 +299,43 @@ void renderPass(glm::mat4 viewMatrix, glm::mat4 projectionMatrix)
 	shaderList[0].validate();
 
 	renderScene();
+
+	// CUBE STUFFS
+	noTexShader.useShader();
+	uniformModel = noTexShader.getModelLocation();
+	uniformProjection = noTexShader.getProjectionLocation();
+	uniformView = noTexShader.getViewLocation();
+	uniformModel = noTexShader.getModelLocation();
+	uniformEyePosition = noTexShader.getEyePositionLocation();
+	uniformSpecularIntensity = noTexShader.getSpecularIntensityLocation();
+	uniformShininess = noTexShader.getShininessLocation();
+
+	glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+	glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+	glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+
+	noTexShader.setDirectionalLight(&mainLight);
+	noTexShader.setPointLights(pointLights, pointLightCount, 3, 0);
+	noTexShader.setSpotLights(spotLights, spotLightCount, 3 + pointLightCount, pointLightCount);
+	val = mainLight.calculateLightTransform();
+	noTexShader.setDirectionalLightTransform(&val);
+
+	mainLight.getShadowMap()->read(GL_TEXTURE2);
+	noTexShader.setDirectionalShadowMap(2);
+
+	noTexShader.validate();
+
+	renderCube();
 }
 
 int main (int argc, char* argv[]) {   
-
     mainWindow = Window(1366, 768);
     mainWindow.initialize();
     
     Uint64 NOW = SDL_GetPerformanceCounter();
     Uint64 LAST = 0;
     double deltaTime = 0;
-    
+
     // Create stuff
     createObjects();
     createShaders();
