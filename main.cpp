@@ -145,7 +145,7 @@ void createObjects()
 	obj3->createMesh(floorVertices, floorIndices, 32, 6);
 	meshList.push_back(obj3);
 
-	cube = new Cube(1.0f, 0.0f, 0.0f);
+	cube = new Cube(0.0f, 1.0f, 0.0f);
 }
 
 void createShaders()
