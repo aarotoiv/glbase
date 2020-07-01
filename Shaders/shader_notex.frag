@@ -220,5 +220,5 @@ void main()
 	finalColour += CalcPointLights();
 	finalColour += CalcSpotLights();
 	
-	colour = vec4(1.0, 0.0, 0.0, 1.0) * finalColour;
+	colour = vCol * finalColour;
 }
