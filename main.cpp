@@ -210,11 +210,10 @@ void renderScene()
 }
 
 void renderCube() {
-	glm::mat4 model(1.0f);
-	model = glm::scale(model, glm::vec3(0.5f, 0.5, 0.5f));
-	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+	cube->scale(1.0f, 0.1f, 0.5f);
+	cube->setModel();
 	shinyMaterial.useMaterial(uniformSpecularIntensity, uniformShininess);
-	cube->render();
+	cube->render(uniformModel);
 }
 
 void directionalShadowMapPass(DirectionalLight* light)

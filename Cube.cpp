@@ -1,6 +1,18 @@
 #include "Cube.h"
 
 Cube::Cube(GLfloat r, GLfloat g, GLfloat b) {
+    model = glm::mat4(1.0f);
+    translateX = 0.0f;
+    translateY = 0.0f;
+    translateZ = 0.0f;
+    rotationRadians = 0.0f;
+    rotationX = 1.0f;
+    rotationY = 1.0f;
+    rotationZ = 1.0f;
+    scaleX = 1.0f;
+    scaleY = 1.0f;
+    scaleZ = 1.0f;
+
     GLfloat vertices[24] = {
         -1.0f, 1.0f, -1.0f,
         1.0f, 1.0f, -1.0f,
@@ -65,8 +77,35 @@ GLfloat *Cube::calculateNormals(GLfloat *destination, GLfloat *vertices, GLuint 
     } 
 }
 
-void Cube::render() {
+void Cube::render(GLuint uniformModel) {
+    glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
     mesh->renderRaw(36);
+}
+
+void Cube::translate(GLfloat xTranslation, GLfloat yTranslation, GLfloat zTranslation) {
+    translateX = xTranslation;
+    translateY = yTranslation;
+    translateZ = zTranslation;
+}
+
+void Cube::rotate(GLfloat radians, GLfloat xRotation, GLfloat yRotation, GLfloat zRotation) {
+    rotationRadians = radians;
+    rotationX = xRotation;
+    rotationY = yRotation;
+    rotationZ = zRotation;
+}
+
+void Cube::scale (GLfloat xScale, GLfloat yScale, GLfloat zScale) {
+    scaleX = xScale;
+    scaleY = yScale;
+    scaleZ = zScale;
+}
+
+void Cube::setModel() {
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(translateX, translateY, translateZ));
+    model = glm::rotate(model, rotationRadians, glm::vec3(rotationX, rotationY, rotationZ));
+    model = glm::scale(model, glm::vec3(scaleX, scaleY, scaleZ));
 }
 
 Cube::~Cube() {
