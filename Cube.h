@@ -12,6 +12,7 @@
 
 class Cube {
     public:
+        Cube();
         Cube(GLfloat r, GLfloat g, GLfloat b);
 
         void render(GLuint uniformModel);

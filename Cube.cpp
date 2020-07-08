@@ -1,5 +1,56 @@
 #include "Cube.h"
 
+Cube::Cube() {
+    model = glm::mat4(1.0f);
+    translateX = 0.0f;
+    translateY = 0.0f;
+    translateZ = 0.0f;
+    rotationRadians = 0.0f;
+    rotationX = 1.0f;
+    rotationY = 1.0f;
+    rotationZ = 1.0f;
+    scaleX = 1.0f;
+    scaleY = 1.0f;
+    scaleZ = 1.0f;
+
+    GLfloat vertices[24] = {
+        -1.0f, 1.0f, -1.0f,
+        1.0f, 1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        -1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,
+        1.0f, -1.0f, 1.0f
+    };
+
+    GLuint indices[36] = {
+        // Front
+        1, 3, 0,
+        0, 3, 2,
+        // Back
+        4, 6, 5,
+        5, 6, 7,
+        // Left
+        0, 2, 4,
+        4, 2, 6,
+        // Right
+        5, 7, 1,
+        1, 7, 3,
+        // Top
+        5, 1, 4,
+        4, 1, 0,
+        // Bottom
+        6, 2, 7,
+        7, 2, 3
+    };
+
+    calculateNormals(vertexData, vertices, indices, 36, 1.0f, 1.0f, 1.0f);
+
+    mesh = new Mesh();
+    mesh->createMesh(vertexData, 36 * 9);
+}
+
 Cube::Cube(GLfloat r, GLfloat g, GLfloat b) {
     model = glm::mat4(1.0f);
     translateX = 0.0f;
