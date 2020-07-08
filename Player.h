@@ -11,8 +11,8 @@ class Player {
         ~Player();
 
     private:
-        Cube head;
-        Cube body;
+        Cube *head;
+        Cube *body;
 };
 
 #endif

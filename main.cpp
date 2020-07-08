@@ -27,6 +27,7 @@
 #include "Model.h"
 
 #include "Cube.h"
+#include "Player.h"
 
 const float toRadians = 3.14159265f / 180.0f;
 
@@ -67,6 +68,7 @@ GLfloat lastTime = 0.0f;
 GLfloat blackhawkAngle = 0.0f;
 
 Cube *cube;
+Player *player;
 
 // Vertex Shader
 static const char* vShader = "Shaders/shader.vert";
@@ -146,6 +148,7 @@ void createObjects()
 	meshList.push_back(obj3);
 
 	cube = new Cube(0.0f, 1.0f, 0.0f);
+	player = new Player();
 }
 
 void createShaders()
@@ -210,10 +213,8 @@ void renderScene()
 }
 
 void renderCube() {
-	cube->scale(1.0f, 0.1f, 0.5f);
-	cube->setModel();
 	shinyMaterial.useMaterial(uniformSpecularIntensity, uniformShininess);
-	cube->render(uniformModel);
+	player->render(uniformModel);
 }
 
 void directionalShadowMapPass(DirectionalLight* light)
@@ -339,7 +340,7 @@ int main (int argc, char* argv[]) {
     createObjects();
     createShaders();
 
-    camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 0.05f, 0.5f);
+    camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 0.01f, 0.5f);
 
 	brickTexture = Texture("Textures/brick.png");
 	brickTexture.loadTextureA();

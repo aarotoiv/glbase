@@ -66,7 +66,7 @@ int Window::initialize() {
     // SDL OpenGL context
     glContext = SDL_GL_CreateContext(window);
     // SDL v-sync
-    // SDL_GL_SetSwapInterval(1);
+    SDL_GL_SetSwapInterval(1);
 
     // GLEW
     glewInit();
