@@ -43,6 +43,10 @@
         "typeinfo": "cpp",
         "chrono": "cpp",
         "ctime": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "functional": "cpp",
+        "numeric": "cpp",
+        "iterator": "cpp",
+        "random": "cpp"
     }
 }

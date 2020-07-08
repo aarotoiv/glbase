@@ -29,9 +29,7 @@ void Model::loadModel(const std::string & fileName)
 		printf("Model (%s) failed to load: %s", fileName, importer.GetErrorString());
 		return;
 	}
-
 	loadNode(scene->mRootNode, scene);
-
 	loadMaterials(scene);
 }
 

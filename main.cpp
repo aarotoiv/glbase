@@ -52,8 +52,7 @@ Texture plainTexture;
 Material shinyMaterial;
 Material dullMaterial;
 
-Model xwing;
-Model blackhawk;
+//Model xwing;
 
 DirectionalLight mainLight;
 PointLight pointLights[MAX_POINT_LIGHTS];
@@ -64,8 +63,6 @@ unsigned int spotLightCount = 0;
 
 GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
-
-GLfloat blackhawkAngle = 0.0f;
 
 Cube *cube;
 Player *player;
@@ -188,28 +185,13 @@ void renderScene()
 	shinyMaterial.useMaterial(uniformSpecularIntensity, uniformShininess);
 	meshList[2]->renderMesh();
 
-	model = glm::mat4(1.0f);
+	/*model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(-7.0f, 0.0f, 10.0f));
 	model = glm::scale(model, glm::vec3(0.006f, 0.006f, 0.006f));
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 	shinyMaterial.useMaterial(uniformSpecularIntensity, uniformShininess);
 	xwing.renderModel();
-
-	blackhawkAngle += 0.1f;
-	if (blackhawkAngle > 360.0f)
-	{
-		blackhawkAngle = 0.1f;
-	}
-
-	model = glm::mat4(1.0f);
-	model = glm::rotate(model, -blackhawkAngle * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::translate(model, glm::vec3(-8.0f, 2.0f, 0.0f));
-	model = glm::rotate(model, -20.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
-	model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
-	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-	shinyMaterial.useMaterial(uniformSpecularIntensity, uniformShininess);
-	blackhawk.renderModel();
+	*/
 }
 
 void renderCube() {
@@ -335,11 +317,9 @@ int main (int argc, char* argv[]) {
     Uint64 NOW = SDL_GetPerformanceCounter();
     Uint64 LAST = 0;
     double deltaTime = 0;
-
     // Create stuff
     createObjects();
     createShaders();
-
     camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 0.01f, 0.5f);
 
 	brickTexture = Texture("Textures/brick.png");
@@ -352,11 +332,10 @@ int main (int argc, char* argv[]) {
     shinyMaterial = Material(4.0f, 256);
 	dullMaterial = Material(0.3f, 4);
 
-	xwing = Model();
-	xwing.loadModel("Models/x-wing.obj");
 
-	blackhawk = Model();
-	blackhawk.loadModel("Models/uh60.obj");
+	/*xwing = Model();
+	xwing.loadModel("Models/x-wing.obj");
+	*/
 
 	mainLight = DirectionalLight(2048, 2048,
 								1.0f, 1.0f, 1.0f, 
@@ -368,13 +347,13 @@ int main (int argc, char* argv[]) {
 								0.0f, 1.0f,
 								1.0f, 1.0f, 0.0f,
 								0.3f, 0.1f, 0.1f);
-	pointLightCount++;
+	//pointLightCount++;
 	pointLights[1] = PointLight(1024, 1024, 0.01f, 100.0f,
 								0.0f, 1.0f, 0.0f,
 								0.0f, 1.0f,
 								-4.0f, 3.0f, 0.0f,
 								0.3f, 0.1f, 0.1f);
-	pointLightCount++;
+	//pointLightCount++;
 
 	
 	spotLights[0] = SpotLight(1024, 1024, 0.01f, 100.0f,
@@ -405,9 +384,8 @@ int main (int argc, char* argv[]) {
         NOW = SDL_GetPerformanceCounter();
 
         deltaTime = (double)((NOW - LAST)*1000 / (double)SDL_GetPerformanceFrequency());
-        std::cout << deltaTime << std::endl;
         mainWindow.pollEvent();
-
+		std::cout << deltaTime << std::endl;
         
         camera.keyControl(mainWindow.getKeys(), deltaTime);
         camera.mouseControl(mainWindow.getMouseX(), mainWindow.getMouseY());
