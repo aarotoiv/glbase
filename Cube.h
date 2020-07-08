@@ -15,6 +15,8 @@ class Cube {
         Cube(GLfloat r, GLfloat g, GLfloat b);
 
         void render(GLuint uniformModel);
+        void updateMesh();
+    
         void translate(GLfloat xTranslation, GLfloat yTranslation, GLfloat zTranslation);
         void rotate(GLfloat radians, GLfloat xRotation, GLfloat yRotation, GLfloat zRotation);
         void scale (GLfloat xScale, GLfloat yScale, GLfloat zScale);

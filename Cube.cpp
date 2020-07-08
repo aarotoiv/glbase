@@ -82,6 +82,10 @@ void Cube::render(GLuint uniformModel) {
     mesh->renderRaw(36);
 }
 
+void Cube::updateMesh() {
+    mesh->updateMesh(vertexData, 36 * 9);
+}
+
 void Cube::translate(GLfloat xTranslation, GLfloat yTranslation, GLfloat zTranslation) {
     translateX = xTranslation;
     translateY = yTranslation;

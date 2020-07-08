@@ -56,6 +56,14 @@ void Mesh::createMesh(GLfloat *vertices, unsigned int numOfVertices) {
 	glBindVertexArray(0);
 }
 
+void Mesh::updateMesh(GLfloat *vertices, unsigned int numOfVertices) {
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices[0]) * numOfVertices, vertices);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
+
 void Mesh::renderMesh()
 {
 	glBindVertexArray(VAO);
