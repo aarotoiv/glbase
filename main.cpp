@@ -340,7 +340,7 @@ int main (int argc, char* argv[]) {
 	mainLight = DirectionalLight(2048, 2048,
 								1.0f, 1.0f, 1.0f, 
 								0.1f, 0.3f,
-								0.0f, -15.0f, -10.0f);
+								10.0f, -15.0f, -10.0f);
 
 	pointLights[0] = PointLight(1024, 1024, 0.01f, 100.0f,
 								0.0f, 0.0f, 1.0f,
