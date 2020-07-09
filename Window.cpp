@@ -73,6 +73,9 @@ int Window::initialize() {
     glEnable(GL_DEPTH_TEST);
     //glEnable(GL_TEXTURE_2D);
     //glEnable(GL_BLEND);
+    glFrontFace(GL_CCW);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 }
 
 void Window::pollEvent() {
