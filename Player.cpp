@@ -66,11 +66,11 @@ Player::Player() {
         0, 3, 7,
         7, 5, 0,
         // elbowconnection top
-        0, 1, 5,
+        1, 0, 5,
         5, 4, 1,
         //elbowconnection left
-        1, 2, 6,
-        6, 4, 1,
+        1, 6, 2,
+        4, 6, 1,
         // elbowconnection bottom
         3, 2, 6,
         6, 7, 3,
@@ -78,21 +78,21 @@ Player::Player() {
         5, 7, 12,
         12, 11, 5,
 
-        5, 9, 10,
-        10, 11, 5,
+        9, 5, 10,
+        11, 10, 5,
 
-        9, 8, 13,
-        13, 10, 9,
+        13, 9, 8,
+        13, 9, 10,
 
         7, 8, 13, 
         13, 12, 7,
 
-        4, 6, 8,
-        8, 9, 4,
+        4, 8, 6,
+        9, 8, 4,
 
-        4, 5, 9,
+        9, 4, 5,
 
-        6, 7, 8
+        8, 7, 6
 
 
     };
@@ -110,7 +110,7 @@ Player::~Player() {
 
 void Player::generateHands(GLfloat *destination, GLfloat *vertices, GLuint *indices, GLuint indexCount, GLfloat r, GLfloat g, GLfloat b) {
     int offset = 0;
-    for (size_t i = 0; i < indexCount; i += 6) {
+    for (size_t i = 0; i < indexCount; i += 3) {
         GLfloat x1 = vertices[indices[i] * 3]; GLfloat y1 = vertices[indices[i] * 3 + 1]; GLfloat z1 = vertices[indices[i] * 3 + 2];
         GLfloat x2 = vertices[indices[i + 1] * 3]; GLfloat y2 = vertices[indices[i + 1] * 3 + 1]; GLfloat z2 = vertices[indices[i + 1] * 3 + 2];
         GLfloat x3 = vertices[indices[i + 2] * 3]; GLfloat y3 = vertices[indices[i + 2] * 3 + 1]; GLfloat z3 = vertices[indices[i + 2] * 3 + 2];
@@ -120,7 +120,7 @@ void Player::generateHands(GLfloat *destination, GLfloat *vertices, GLuint *indi
 		glm::vec3 normal = glm::cross(v1, v2);
 		normal = glm::normalize(normal);
         
-        for (size_t j = 0; j < 6; j++) {
+        for (size_t j = 0; j < 3; j++) {
             destination[offset++] = vertices[indices[i+j] * 3];
             destination[offset++] = vertices[indices[i+j] * 3 + 1];
             destination[offset++] = vertices[indices[i+j] * 3 + 2];

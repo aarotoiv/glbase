@@ -73,7 +73,7 @@ int Window::initialize() {
     glEnable(GL_DEPTH_TEST);
     //glEnable(GL_TEXTURE_2D);
     //glEnable(GL_BLEND);
-    glFrontFace(GL_CCW);
+    glFrontFace(GL_CCW); // <- says faces are defined in counter-clockwise order. Change if yours are in clockwise order
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 }
