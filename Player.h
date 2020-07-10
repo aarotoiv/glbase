@@ -9,7 +9,7 @@ class Player {
     public:
         Player();
         void render(GLuint uniformModel);
-        void generateHands(GLfloat *destination, GLfloat *vertices, GLuint *indices, GLuint indexCount, GLfloat r, GLfloat g, GLfloat b, bool inverted);
+        void generateHands(GLfloat *destination, GLfloat *vertices, GLuint *indices, GLuint indexCount, GLfloat r, GLfloat g, GLfloat b);
         ~Player();
 
     private:
@@ -20,7 +20,7 @@ class Player {
         struct {
             GLfloat vertices[36];
             GLfloat indices[48];
-            GLfloat vertexData[60 * 9];
+            GLfloat vertexData[66 * 9];
             Mesh *mesh;
             glm::mat4 model;
         } leftHand, rightHand;
