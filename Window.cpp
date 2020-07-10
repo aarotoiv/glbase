@@ -42,7 +42,7 @@ int Window::initialize() {
         return 1;
     }
     // Create a window
-    window = SDL_CreateWindow("My Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("kysta", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
     if (!window) {
         fprintf(stderr, "Error creating window.\n");
         return 2;

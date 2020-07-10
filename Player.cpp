@@ -97,6 +97,12 @@ Player::Player() {
     rightHand.model = glm::translate(rightHand.model, glm::vec3(-0.06f, 0.12f, 0.02f));
     rightHand.model = glm::scale(rightHand.model, glm::vec3(0.05f, 0.05f, 0.05f));
 
+    rightHand.animDir = -1;
+    rightHand.animCap = 2.0f;
+    rightHand.xAnimCurrent = 0.0f;
+    rightHand.yAnimCurrent = 0.0f;
+    rightHand.zAnimCurrent = 0.0f;
+
     std::copy(std::begin(indices), std::end(indices), std::begin(rightHand.indices));
 
     // reverse indices for lefthand generation. the normals get fucked
@@ -166,12 +172,26 @@ void Player::render(GLuint uniformModel) {
 
 void Player::moveHands() {
     int indicePoints[4] = {10, 11, 12, 13};
+    rightHand.yAnimCurrent += 0.0005f * rightHand.animDir;
+    if (rightHand.animDir == -1 && rightHand.yAnimCurrent < -rightHand.animCap) {
+        rightHand.yAnimCurrent = -rightHand.animCap;
+        rightHand.animDir *= -1;
+    }
+
+    if (rightHand.animDir == 1 && rightHand.yAnimCurrent > rightHand.animCap) {
+        rightHand.yAnimCurrent = rightHand.animCap;
+        rightHand.animDir *= -1;
+    }
 
     for (int i = 0; i < 66; i++) {
         for (int j = 0; j < 4; j++) {
-            if (leftHand.indices[i] == indicePoints[j]) {
-                std::cout << "Match" << std::endl;
+            if (rightHand.indices[i] == indicePoints[j]) {
+                // Match found, modify 
+                rightHand.vertexData[i * 9 + 1] += 0.0005f * rightHand.animDir;
+                rightHand.vertexData[i * 9 + 2] += 0.0001f * rightHand.animDir;
             }
         }
     }
+
+    rightHand.mesh->updateMesh(rightHand.vertexData, 66 * 9);
 }

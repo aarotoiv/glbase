@@ -385,7 +385,7 @@ int main (int argc, char* argv[]) {
 
         deltaTime = (double)((NOW - LAST)*1000 / (double)SDL_GetPerformanceFrequency());
         mainWindow.pollEvent();
-		std::cout << deltaTime << std::endl;
+		// std::cout << deltaTime << std::endl;
         
         camera.keyControl(mainWindow.getKeys(), deltaTime);
         camera.mouseControl(mainWindow.getMouseX(), mainWindow.getMouseY());

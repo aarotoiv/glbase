@@ -24,6 +24,9 @@ class Player {
             GLfloat vertexData[66 * 9];
             Mesh *mesh;
             glm::mat4 model;
+            int animDir;
+            float xAnimCurrent, yAnimCurrent, zAnimCurrent;
+            float animCap;
         } leftHand, rightHand;
 
         bool movingDown;
