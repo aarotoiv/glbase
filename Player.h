@@ -10,6 +10,7 @@ class Player {
         Player();
         void render(GLuint uniformModel);
         void generateHands(GLfloat *destination, GLfloat *vertices, GLuint *indices, GLuint indexCount, GLfloat r, GLfloat g, GLfloat b);
+        void moveHands();
         ~Player();
 
     private:
@@ -19,11 +20,13 @@ class Player {
         Cube *rightLeg;
         struct {
             GLfloat vertices[36];
-            GLfloat indices[48];
+            GLfloat indices[66];
             GLfloat vertexData[66 * 9];
             Mesh *mesh;
             glm::mat4 model;
         } leftHand, rightHand;
+
+        bool movingDown;
 };
 
 #endif

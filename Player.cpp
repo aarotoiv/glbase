@@ -1,6 +1,8 @@
 #include "Player.h"
 
 Player::Player() {
+    movingDown = true;
+
     head = new Cube(241.0f / 255.0f, 194.0f / 255.0f, 125.0f / 255.0f);
     body = new Cube(1.0f, 0.0f, 0.0f);
     leftLeg = new Cube(241.0f / 255.0f, 194.0f / 255.0f, 125.0f / 255.0f);
@@ -86,15 +88,16 @@ Player::Player() {
         // hand tips
         10, 13, 11,
         11, 13, 12
-
-
     };
+
     generateHands(rightHand.vertexData, vertices, indices, 66, 241.0f / 255.0f, 194.0f / 255.0f, 125.0f / 255.0f);
     rightHand.mesh = new Mesh();
     rightHand.mesh->createMesh(rightHand.vertexData, 66 * 9);
     rightHand.model = glm::mat4(1.0f);
     rightHand.model = glm::translate(rightHand.model, glm::vec3(-0.06f, 0.12f, 0.02f));
     rightHand.model = glm::scale(rightHand.model, glm::vec3(0.05f, 0.05f, 0.05f));
+
+    std::copy(std::begin(indices), std::end(indices), std::begin(rightHand.indices));
 
     // reverse indices for lefthand generation. the normals get fucked
     // TODO: fix normal calculations
@@ -107,6 +110,7 @@ Player::Player() {
     leftHand.model = glm::translate(leftHand.model, glm::vec3(0.06f, 0.12f, 0.02f));
     leftHand.model = glm::scale(leftHand.model, glm::vec3(-0.05f, 0.05f, 0.05f));
 
+    std::copy(std::begin(indices), std::end(indices), std::begin(leftHand.indices));
 }
 
 Player::~Player() {
@@ -148,10 +152,26 @@ void Player::render(GLuint uniformModel) {
     leftLeg->render(uniformModel);
     rightLeg->render(uniformModel);
 
+    if (movingDown) {
+        moveHands();
+    }
+
     glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(leftHand.model));
     leftHand.mesh->renderRaw(66);
 
     glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(rightHand.model));
     rightHand.mesh->renderRaw(66);
 
+}
+
+void Player::moveHands() {
+    int indicePoints[4] = {10, 11, 12, 13};
+
+    for (int i = 0; i < 66; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (leftHand.indices[i] == indicePoints[j]) {
+                std::cout << "Match" << std::endl;
+            }
+        }
+    }
 }
