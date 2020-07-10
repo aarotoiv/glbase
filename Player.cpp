@@ -3,18 +3,11 @@
 Player::Player() {
     head = new Cube(241.0f / 255.0f, 194.0f / 255.0f, 125.0f / 255.0f);
     body = new Cube(1.0f, 0.0f, 0.0f);
-    leftHand = new Cube(241.0f / 255.0f, 194.0f / 255.0f, 125.0f / 255.0f);
-    rightHand = new Cube(241.0f / 255.0f, 194.0f / 255.0f, 125.0f / 255.0f);
     leftLeg = new Cube(241.0f / 255.0f, 194.0f / 255.0f, 125.0f / 255.0f);
     rightLeg = new Cube(241.0f / 255.0f, 194.0f / 255.0f, 125.0f / 255.0f);
     head->translate(0.0f, 0.3f, 0.02f);
     head->scale(0.1f, 0.1f, 0.1f);
     body->scale(0.06f, 0.2f, 0.06f);
-
-    rightHand->translate(-0.09f, 0.04f, 0.0f);
-    leftHand->translate(0.09f, 0.04f, 0.0f);
-    rightHand->scale(0.03f, 0.12f, 0.03f);
-    leftHand->scale(0.03f, 0.12f, 0.03f);
 
     leftLeg->translate(0.045f, -0.26f, 0.0f);
     rightLeg->translate(-0.045f, -0.26f, 0.0f);
@@ -23,9 +16,6 @@ Player::Player() {
 
     head->setModel();
     body->setModel();
-
-    leftHand->setModel();
-    rightHand->setModel();
 
     leftLeg->setModel();
     rightLeg->setModel();
@@ -52,60 +42,74 @@ Player::Player() {
         //elbow backleft 9
         -3.0f, -3.0f, -1.0f,
         // arm left 10
-        -3.0f, -3.0f, 1.0f,
+        -3.0f, -3.0f, 2.0f,
         // arm top 11
-        -2.0f, -2.0f, 1.0f, 
+        -2.0f, -2.0f, 2.0f, 
         // arm right 12
-        -1.0f, -3.0f, 1.0f,
+        -1.0f, -3.0f, 2.0f,
         // arm bot 13
-        -2.0f, -4.0f, 1.0f,    
+        -2.0f, -4.0f, 2.0f,    
     };
 
     GLuint indices[60] = {
         //elbowconnection right
-        0, 3, 7,
-        7, 5, 0,
+        3, 0, 7,
+        7, 0, 5,
         // elbowconnection top
-        1, 0, 5,
-        5, 4, 1,
+        0, 1, 5,
+        4, 5, 1,
         //elbowconnection left
-        1, 6, 2,
-        4, 6, 1,
+        1, 2, 6,
+        6, 4, 1,
         // elbowconnection bottom
-        3, 2, 6,
-        6, 7, 3,
+        6, 2, 3,
+        3, 7, 6,
 
-        5, 7, 12,
-        12, 11, 5,
+        12, 7, 5,
+        5, 11, 12,
 
-        9, 5, 10,
-        11, 10, 5,
+        9, 10, 5,
+        11, 5, 10,
 
         13, 9, 8,
-        13, 9, 10,
+        10, 9, 13,
 
-        7, 8, 13, 
-        13, 12, 7,
+        13, 8, 7, 
+        7, 12, 13,
 
-        4, 8, 6,
-        9, 8, 4,
+        6, 8, 4,
+        4, 8, 9,
 
-        9, 4, 5,
-
-        8, 7, 6
+        5, 4, 9,
+        6, 7, 8
 
 
     };
-    generateHands(playerHand.vertexData, vertices, indices, 60, 1.0f, 1.0f, 1.0f);
-    playerHand.mesh = new Mesh();
-    playerHand.mesh->createMesh(playerHand.vertexData, 60 * 9);
-    playerHand.model = glm::mat4(1.0f);
-    playerHand.model = glm::translate(playerHand.model, glm::vec3(0.0f, 2.0f, 0.0f));
-    playerHand.model = glm::scale(playerHand.model, glm::vec3(0.5f, 0.5f, 0.5f));
+    generateHands(rightHand.vertexData, vertices, indices, 60, 1.0f, 1.0f, 1.0f);
+    rightHand.mesh = new Mesh();
+    rightHand.mesh->createMesh(rightHand.vertexData, 60 * 9);
+    rightHand.model = glm::mat4(1.0f);
+    rightHand.model = glm::translate(rightHand.model, glm::vec3(-0.06f, 0.15f, 0.0f));
+    rightHand.model = glm::scale(rightHand.model, glm::vec3(0.05f, 0.05f, 0.05f));
+
+    // reverse indices for lefthand generation. the normals get fucked
+    // TODO: fix normal calculations
+    std::reverse(indices, indices + 60);
+
+    generateHands(leftHand.vertexData, vertices, indices, 60, 1.0f, 1.0f, 1.0f);
+    leftHand.mesh = new Mesh();
+    leftHand.mesh->createMesh(leftHand.vertexData, 60 * 9);
+    leftHand.model = glm::mat4(1.0f);
+    leftHand.model = glm::translate(leftHand.model, glm::vec3(0.06f, 0.15f, 0.0f));
+    leftHand.model = glm::scale(leftHand.model, glm::vec3(-0.05f, 0.05f, 0.05f));
+
 }
 
 Player::~Player() {
-
+    delete head;
+    delete body;
+    delete leftLeg;
+    delete rightLeg;
 }
 
 void Player::generateHands(GLfloat *destination, GLfloat *vertices, GLuint *indices, GLuint indexCount, GLfloat r, GLfloat g, GLfloat b) {
@@ -137,11 +141,13 @@ void Player::generateHands(GLfloat *destination, GLfloat *vertices, GLuint *indi
 void Player::render(GLuint uniformModel) {
     head->render(uniformModel);
     body->render(uniformModel);
-    leftHand->render(uniformModel);
-    rightHand->render(uniformModel);
     leftLeg->render(uniformModel);
     rightLeg->render(uniformModel);
 
-    glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(playerHand.model));
-    playerHand.mesh->renderRaw(60);
+    glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(leftHand.model));
+    leftHand.mesh->renderRaw(60);
+
+    glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(rightHand.model));
+    rightHand.mesh->renderRaw(60);
+
 }
